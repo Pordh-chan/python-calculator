@@ -3,11 +3,8 @@ class Calculator:
         return a + b
 
     def subtract(self, a, b):
-        return b - a
+        return a - b
 
-    #เพิ่ม a - b
-    def add(self, a, b):
-        return a + b
 
     def multiply(self, a, b):
         result = 0
@@ -19,23 +16,33 @@ class Calculator:
     def multiply(self, a, b):
         result = 0
         pos_b = b if b >= 0 else self.subtract(0, b)
-
         for i in range(pos_b):
             result = self.add(result, a)
         return result if b >= 0 else self.subtract(0, result)
 
 
     def divide(self, a, b):
+        if b == 0:
+            raise ValueError("Cannot divide by zero")
+        same_sign = (a >= 0 and b >= 0) or (a < 0 and b < 0)
+        pos_a = a if a >= 0 else self.subtract(0, a)
+        pos_b = b if b >= 0 else self.subtract(0, b)
         result = 0
-        while a > b:
-            a = self.subtract(a, b)
+        while pos_a >= pos_b:
+            pos_a = self.subtract(pos_a, pos_b)
             result += 1
-        return result
+        return result if same_sign else self.subtract(0, result)
+    
     
     def modulo(self, a, b):
-        while a <= b:
-            a = a-b
-        return a
+        if b == 0:
+            raise ValueError("Cannot modulo by zero")
+        pos_a = a if a >= 0 else self.subtract(0, a)
+        pos_b = b if b >= 0 else self.subtract(0, b)
+        while pos_a >= pos_b:
+            pos_a = self.subtract(pos_a, pos_b)
+        return pos_a if a >= 0 else self.subtract(0, pos_a)
+    
 
     def divide(self, a, b):
         if b == 0:
